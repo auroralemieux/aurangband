@@ -1,11 +1,15 @@
+require_relative 'monster'
+
+
 module Aurangband
   class Dungeon
-    attr_accessor :dungeon
+    attr_accessor :dungeon, :monster
     WALL = "#"
     FLOOR = "."
     PLAYER = "@"
 
     def initialize
+      @monster = Aurangband::Monster.new
     end
 
     def build_dungeon(size)
@@ -24,6 +28,7 @@ module Aurangband
         @dungeon << row
       end
       @dungeon[0][0] = PLAYER
+      @dungeon[1][1] = @monster.char
       return @dungeon
     end
 

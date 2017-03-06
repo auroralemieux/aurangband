@@ -1,6 +1,7 @@
 require_relative 'dungeon'
 require_relative 'player'
 require_relative 'move'
+require_relative 'monster'
 
 module Aurangband
   class Game
@@ -77,6 +78,8 @@ module Aurangband
         puts "You can't walk into a wall!"
       elsif (@row + directions[choice].first < 0) || (@column + directions[choice].last) < 0
         puts "You can't walk off the edge of the dungeon!"
+      elsif ["D", "f"].include?(@new_location)
+        @dungeon.monster.talk        
       else
         @dungeon.dungeon[@row][@column] = "."
         @row += directions[choice].first
