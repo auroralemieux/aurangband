@@ -9,6 +9,10 @@ module Aurangband
     PLAYER = "@"
 
     def initialize
+      new_monster
+    end
+
+    def new_monster
       @monster = Aurangband::Monster.new
     end
 

@@ -5,18 +5,31 @@ require_relative 'monster'
 
 module Aurangband
   class Game
-    PLAYER = "@"
+    # PLAYER = "@"
 
-    attr_reader :dungeon, :player
+    attr_reader :dungeon, :player, :directions
 
     def initialize
       @dungeon = Aurangband::Dungeon.new
+      # this is the location of the player -- starts in the top left corner
       @column = 0
       @row = 0
     end
 
     def play
       welcome
+      commands
+    end
+
+    def dig(dig_direction)
+      @dig_location = @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last]
+      if @dig_location != "#"
+        puts "You can't dig there!"
+      else
+        @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last] = "."
+      end
+
+      refresh_dungeon
       commands
     end
 
@@ -61,7 +74,7 @@ module Aurangband
 
     def move(choice)
       puts "#{@player.name} moves in direction #{choice}."
-      directions = {
+      @directions = {
         "u" => [-1, -1],
         "i" => [-1, 0],
         "o" => [-1, +1],
@@ -73,17 +86,17 @@ module Aurangband
         "." => [+1, +1]
       }
 
-      @new_location = @dungeon.dungeon[@row + directions[choice].first][@column + directions[choice].last]
+      @new_location = @dungeon.dungeon[@row + @directions[choice].first][@column + @directions[choice].last]
       if @new_location == "#"
         puts "You can't walk into a wall!"
-      elsif (@row + directions[choice].first < 0) || (@column + directions[choice].last) < 0
+      elsif (@row + @directions[choice].first < 0) || (@column + @directions[choice].last) < 0
         puts "You can't walk off the edge of the dungeon!"
       elsif ["D", "f"].include?(@new_location)
-        @dungeon.monster.talk        
+        @dungeon.monster.talk
       else
         @dungeon.dungeon[@row][@column] = "."
-        @row += directions[choice].first
-        @column += directions[choice].last
+        @row += @directions[choice].first
+        @column += @directions[choice].last
         @dungeon.dungeon[@row][@column] = "@"
       end
 
@@ -100,6 +113,15 @@ module Aurangband
         case choice
         when "?", "help"
           help
+        when "d", "dig"
+          print "What direction are you digging in? >> "
+          dig_direction = gets.chomp.to_s.downcase
+          if %w(u i o j l m , .).include?(dig_direction)
+            dig(dig_direction)
+          else
+            puts "Sorry, that's not a valid direction."
+            commands
+          end
         when "n", "new"
           new_dungeon
         when "q", "quit", "exit"
