@@ -14,22 +14,22 @@ module Aurangband
       # this is the location of the player -- starts in the top left corner
       @column = 0
       @row = 0
+      @directions = {
+        "u" => [-1, -1],
+        "i" => [-1, 0],
+        "o" => [-1, +1],
+        "j" => [0, -1],
+        "k" => [0, 0],
+        "l" => [0, +1],
+        "m" => [+1, -1],
+        "," => [+1, 0],
+        "." => [+1, +1]
+      }
     end
 
     def play
       welcome
-      commands
-    end
-
-    def dig(dig_direction)
-      @dig_location = @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last]
-      if @dig_location != "#"
-        puts "You can't dig there!"
-      else
-        @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last] = "."
-      end
-
-      refresh_dungeon
+      new_dungeon
       commands
     end
 
@@ -61,31 +61,48 @@ module Aurangband
         puts "I guess you didn't mean to do that."
       end
       refresh_dungeon
-      commands
     end
 
     def refresh_dungeon
       @dungeon.display_dungeon
     end
 
-    # def locate_player
-    #   puts @dungeon.dungeon.index("@") # this won't work since "@" isn't an element of the first level (it's not a row, it's in a row)
-    # end
+    def commands
+      print "\n>> "
+      choice = gets.chomp.to_s.downcase
+      if %w(u i o j k l m , .).include?(choice)
+        move(choice)
+        refresh_dungeon
+        commands
+      else
+        case choice
+        when "?", "help"
+          help
+        when "d", "dig"
+          print "What direction are you digging in? >> "
+          dig_direction = gets.chomp.to_s.downcase
+          if %w(u i o j l m , .).include?(dig_direction)
+            dig(dig_direction)
+            refresh_dungeon
+            # commands
+          else
+            puts "Sorry, that's not a valid direction."
+            # commands
+          end
+        when "n", "new"
+          new_dungeon
+        when "q", "quit", "exit"
+          quit_game
+        else
+          puts "Wha...?"
+          # commands
+        end
+        commands
+      end
+    end
 
     def move(choice)
       puts "#{@player.name} moves in direction #{choice}."
-      @directions = {
-        "u" => [-1, -1],
-        "i" => [-1, 0],
-        "o" => [-1, +1],
-        "j" => [0, -1],
-        "k" => [0, 0],
-        "l" => [0, +1],
-        "m" => [+1, -1],
-        "," => [+1, 0],
-        "." => [+1, +1]
-      }
-
       @new_location = @dungeon.dungeon[@row + @directions[choice].first][@column + @directions[choice].last]
       if @new_location == "#"
         puts "You can't walk into a wall!"
@@ -99,38 +116,17 @@ module Aurangband
         @column += @directions[choice].last
         @dungeon.dungeon[@row][@column] = "@"
       end
-
-      refresh_dungeon
-      commands
     end
 
-    def commands
-      print "\n>> "
-      choice = gets.chomp.to_s.downcase
-      if %w(u i o j k l m , .).include?(choice)
-        move(choice)
+    def dig(dig_direction)
+      @dig_location = @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last]
+      if @dig_location != "#"
+        puts "You can't dig there!"
       else
-        case choice
-        when "?", "help"
-          help
-        when "d", "dig"
-          print "What direction are you digging in? >> "
-          dig_direction = gets.chomp.to_s.downcase
-          if %w(u i o j l m , .).include?(dig_direction)
-            dig(dig_direction)
-          else
-            puts "Sorry, that's not a valid direction."
-            commands
-          end
-        when "n", "new"
-          new_dungeon
-        when "q", "quit", "exit"
-          quit_game
-        else
-          puts "Wha...?"
-          commands
-        end
+        @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last] = "."
       end
+
+
     end
 
     def welcome

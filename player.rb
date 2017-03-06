@@ -10,12 +10,15 @@ module Aurangband
     def initialize(name)
       @name = name
       # location coordinates are y,x
-      @location = [0,0]
+      # @location = [0,0]
+      
     end
 
     def locate
 
     end
+
+
 
     def place_initially
     end
