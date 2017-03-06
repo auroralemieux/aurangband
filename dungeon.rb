@@ -28,14 +28,8 @@ module Aurangband
     end
 
     def display_dungeon
-      # display_player
       @dungeon.map { |row| puts row.join }
     end
-
-    # def display_player
-    #   @dungeon[0][0] = PLAYER
-    # end
-
 
   end
 end
