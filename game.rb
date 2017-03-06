@@ -101,33 +101,32 @@ module Aurangband
       end
     end
 
-    def move(choice)
-      puts "#{@player.name} moves in direction #{choice}."
-      @new_location = @dungeon.dungeon[@row + @directions[choice].first][@column + @directions[choice].last]
-      if @new_location == "#"
-        puts "You can't walk into a wall!"
-      elsif (@row + @directions[choice].first < 0) || (@column + @directions[choice].last) < 0
-        puts "You can't walk off the edge of the dungeon!"
-      elsif ["D", "f"].include?(@new_location)
-        @dungeon.monster.talk
-      else
-        @dungeon.dungeon[@row][@column] = "."
-        @row += @directions[choice].first
-        @column += @directions[choice].last
-        @dungeon.dungeon[@row][@column] = "@"
-      end
-    end
+    # def move(choice)
+    #   puts "#{@player.name} moves in direction #{choice}."
+    #   @new_location = @dungeon.dungeon[@row + @directions[choice].first][@column + @directions[choice].last]
+    #   if @new_location == "#"
+    #     puts "You can't walk into a wall!"
+    #   elsif (@row + @directions[choice].first < 0) || (@column + @directions[choice].last) < 0
+    #     puts "You can't walk off the edge of the dungeon!"
+    #   elsif ["D", "f"].include?(@new_location)
+    #     @dungeon.monster.talk
+    #   else
+    #     @dungeon.dungeon[@row][@column] = "."
+    #     @row += @directions[choice].first
+    #     @column += @directions[choice].last
+    #     @dungeon.dungeon[@row][@column] = "@"
+    #   end
+    # end
 
-    def dig(dig_direction)
-      @dig_location = @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last]
-      if @dig_location != "#"
-        puts "You can't dig there!"
-      else
-        @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last] = "."
-      end
-
-
-    end
+    # def dig(dig_direction)
+    #   @dig_location = @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last]
+    #   if @dig_location != "#"
+    #     puts "You can't dig there!"
+    #   else
+    #     @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last] = "."
+    #   end
+    #
+    # end
 
     def welcome
       puts "\nWelcome to Aurangband! Dungeon crawling. Yay!"
