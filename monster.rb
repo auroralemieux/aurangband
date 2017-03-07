@@ -5,22 +5,48 @@ module Aurangband
 
     MONSTERS = [
       { map_char: "D",
-        message: "I'm an Ancient Dragon! Rawr!",
+        name: "Ancient Dragon",
+        message: "Rawr!"
       },
       { map_char: "f",
-        message: "I'm a Feline! Purr!"
+        name: "Feline",
+        message: "Purr!"
+      },
+      { map_char: "T",
+        name: "Forest Troll",
+        message: "Grrrlk!"
       }
     ]
     def initialize
-      @monster = MONSTERS.sample
-      @char = @monster[:map_char]
-      @message = @monster[:message]
+      monster = MONSTERS.sample
+      @char = monster[:map_char]
+      @message = monster[:message]
+      @name = monster[:name]
+      @inventory = Inventory.new
     end
 
     def talk
-      puts "#{@char} says '#{@message}'"
+      puts "#{@name} says '#{@message}'"
     end
 
+    def inventory_empty?
+      @inventory.empty? ? true : false
+    end
+
+    def drop
+      if !inventory_empty?
+        #drop something randomly on the tile it's on
+      end
+    end
+
+    def pick_up
+      # add item on floor to the inventory
+    end
+
+    def move
+      # monsters move randomly -- but still follow the rules of floor only
+      # if there are walls blocking them they cannot dig
+    end
 
   end
 end
