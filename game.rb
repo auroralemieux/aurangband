@@ -12,6 +12,8 @@ module Aurangband
     def initialize
       # @player = Player.new
       @dungeon = Aurangband::Dungeon.new
+      @player = Aurangband::Player.new
+      # @player.location = @dungeon[0][0]
       # this is the location of the player -- starts in the top left corner
       # @column = 0
       # @row = 0
@@ -61,6 +63,7 @@ module Aurangband
       else
         puts "I guess you didn't mean to do that."
       end
+      @dungeon.dungeon[0][0] = @player
       refresh_dungeon
     end
 
@@ -132,6 +135,8 @@ module Aurangband
     end
 
     def player_move(choice)
+      @row = @player.location.first
+      @column = @player.location.last
       # puts "#{@player.name} moves in direction #{choice}."
       @new_location = @dungeon.dungeon[@row + choice.first][@column + choice.last]
       if @new_location.class == Aurangband::Wall

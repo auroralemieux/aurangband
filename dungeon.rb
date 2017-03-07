@@ -30,10 +30,10 @@ module Aurangband
 
     def generate_map_elements
       @elements = []
-      25.times { @elements << WALL.char }
-      25.times { @elements << FLOOR.char }
-      1.times { @elements << ITEM.char }
-      3.times { @elements << Aurangband::Monster.new.char }
+      25.times { @elements << WALL }
+      25.times { @elements << FLOOR }
+      1.times { @elements << ITEM }
+      3.times { @elements << Aurangband::Monster.new }
       return @elements
     end
 
@@ -47,17 +47,24 @@ module Aurangband
         end
         @dungeon << row
       end
-      @dungeon[0][0] = PLAYER.char
+      # @dungeon[0][0] = PLAYER.char
       return @dungeon
     end
 
     def display_dungeon
-      @dungeon.map { |row| puts row.join }
+      @dungeon.each do |row|
+        row.each do |element|
+          visual = element.char
+          print visual
+        end
+        puts 
+
+      end
     end
 
   end
 end
-
-new_dungeon = Aurangband::Dungeon.new
-new_dungeon.build_dungeon("large")
-new_dungeon.display_dungeon
+#
+# new_dungeon = Aurangband::Dungeon.new
+# new_dungeon.build_dungeon("large")
+# new_dungeon.display_dungeon

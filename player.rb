@@ -5,7 +5,7 @@
 module Aurangband
   class Player
 
-    attr_accessor :location, :name, :char, :grid
+    attr_accessor :location, :name, :char, :grid, :inventory
 
     def initialize
       # @name is set in get_name
@@ -24,7 +24,8 @@ module Aurangband
       }
       @inventory = Inventory.new
       @char = "@"
-      # @location 
+      @location = [0,0]
+      # @location
     end
 
     def get_name
