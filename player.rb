@@ -5,7 +5,7 @@
 module Aurangband
   class Player
 
-    attr_accessor :location, :name, :char
+    attr_accessor :location, :name, :char, :grid
 
     def initialize
       # @name is set in get_name
@@ -24,6 +24,7 @@ module Aurangband
       }
       @inventory = Inventory.new
       @char = "@"
+      # @location 
     end
 
     def get_name
@@ -37,16 +38,20 @@ module Aurangband
       @inventory.add_item(new_item)
     end
 
+    def list_inventory
+      @inventory.list_inventory
+    end
+
     def drop
       @inventory.drop_item
     end
 
     def dig(dig_direction)
-      @dig_location = @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last]
+      @dig_location = @dungeon.dungeon[@row + dig_direction.first][@column + dig_direction.last]
       if @dig_location != "#"
         puts "You can't dig there!"
       else
-        @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last] = "."
+        @dungeon.dungeon[@row + dig_direction.first][@column + dig_direction.last] = Aurangband::Floor.new
       end
 
     end
@@ -66,11 +71,6 @@ module Aurangband
         @column += @directions[choice].last
         @dungeon.dungeon[@row][@column] = "@"
       end
-    end
-
-
-
-    def move(direction)
     end
 
   end

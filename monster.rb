@@ -22,6 +22,7 @@ module Aurangband
       @char = monster[:char]
       @message = monster[:message]
       @name = monster[:name]
+      # @location 
       @inventory = Inventory.new
     end
 
@@ -30,15 +31,15 @@ module Aurangband
     end
 
     def inventory_empty?
-      @inventory.empty? ? true : false
+      @inventory.items.empty? ? true : false
     end
 
     def drop
       if !inventory_empty?
-        item = @inventory.sample
-        @inventory.delete(item)
+        item = @inventory.items.sample
+        @inventory.items.delete(item)
         puts "The #{@name} dropped #{@item.article} #{@item.name}."
-        # THE TILE IT'S ON NEEDS TO UPDATE
+        # THE Floor TILE IT'S ON NEEDS TO UPDATE its items inventory
       end
     end
 

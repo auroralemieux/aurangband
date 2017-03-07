@@ -3,18 +3,25 @@ require_relative 'item'
 module Aurangband
   class Inventory
 
-    attr_reader :items
+    attr_reader :items, :creatures
 
     def initialize
-      @items = [Item.new, Item.new, Item.new]
+      @creatures = []
+      @items = []
     end
 
     def list_inventory
-      puts "\nInventory: "
-      n = 1
-      @items.map do |item|
-        puts "#{n}. #{item.name}"
-        n += 1
+      if @items.empty?
+        puts "Nothing in inventory."
+      else
+        puts "\nInventory: "
+        n = 1
+        @items.map do |item|
+          if item.class == Aurangband::Item
+            puts "#{n}. #{item.name}"
+            n += 1
+          end
+        end
       end
     end
 
@@ -27,7 +34,7 @@ module Aurangband
       puts "You drop #{@items[number-1].article} #{@items[number-1].name}. It's gone forever!"
       @items.delete_at(number - 1)
     end
-    
+
 
   end
 end

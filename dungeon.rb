@@ -5,6 +5,12 @@ require_relative 'player'
 require_relative 'inventory'
 require_relative 'item'
 
+
+# need to build in the location coordinates for each map object
+# everything has a location
+# if a wall becomes a floor it passes on its location
+# should be able to list all objects at a location given a location (class method) ?
+
 module Aurangband
   class Dungeon
     attr_accessor :dungeon, :monster

@@ -10,11 +10,11 @@ module Aurangband
     attr_reader :dungeon, :player, :directions
 
     def initialize
-      @player = Player.new
+      # @player = Player.new
       @dungeon = Aurangband::Dungeon.new
       # this is the location of the player -- starts in the top left corner
-      @column = 0
-      @row = 0
+      # @column = 0
+      # @row = 0
       @directions = {
         "u" => [-1, -1],
         "i" => [-1, 0],
@@ -68,11 +68,16 @@ module Aurangband
       @dungeon.display_dungeon
     end
 
+    def inventory
+      @player.list_inventory
+    end
+
     def commands
       print "\n>> "
       choice = gets.chomp.to_s.downcase
       if %w(u i o j k l m , .).include?(choice)
-        move(choice)
+        player_move(@directions[choice])
+        # monster_move # write this
         refresh_dungeon
         commands
       else
@@ -83,15 +88,25 @@ module Aurangband
           print "What direction are you digging in? >> "
           dig_direction = gets.chomp.to_s.downcase
           if %w(u i o j l m , .).include?(dig_direction)
-            dig(dig_direction)
+            dig(@directions[dig_direction])
             refresh_dungeon
-            # commands
           else
             puts "Sorry, that's not a valid direction."
-            # commands
           end
         when "n", "new"
-          new_dungeon
+          print "Do you really want to start a new game? (yes/no) >> "
+          start_new = gets.chomp.downcase
+          case start_new
+          when "yes", "y"
+            new_dungeon
+          when "no", "n"
+            commands
+          else
+            puts "What was I saying? Oh..."
+            commands
+          end
+        when "i", "inventory"
+          inventory
         when "q", "quit", "exit"
           quit_game
         else
@@ -102,31 +117,44 @@ module Aurangband
       end
     end
 
-    def move(choice)
+    def monster_move
+      @dungeon.each do |row|
+        row.each do |space|
+          if space.class == Aurangband::Monster
+            space.talk # for now to see if they are all being caught
+            # roll a random number
+            # if it's 1
+            # the monster checks its surroundings
+            # and moves to a random possible place
+          end
+        end
+      end
+    end
+
+    def player_move(choice)
       # puts "#{@player.name} moves in direction #{choice}."
-      @new_location = @dungeon.dungeon[@row + @directions[choice].first][@column + @directions[choice].last]
-      if @new_location == "#"
+      @new_location = @dungeon.dungeon[@row + choice.first][@column + choice.last]
+      if @new_location.class == Aurangband::Wall
         puts "You can't walk into a wall!"
-      elsif (@row + @directions[choice].first < 0) || (@column + @directions[choice].last) < 0
+      elsif (@row + choice.first < 0) || (@column + choice.last) < 0
         puts "You can't walk off the edge of the dungeon!"
-      elsif ["D", "f"].include?(@new_location)
-        @dungeon.monster.talk
+      elsif @new_location.class == Aurangband::Monster
+        @new_location.talk
       else
-        @dungeon.dungeon[@row][@column] = "."
-        @row += @directions[choice].first
-        @column += @directions[choice].last
-        @dungeon.dungeon[@row][@column] = "@"
+        @dungeon.dungeon[@row][@column].inventory.creatures.delete(0)
+        @row += choice.first
+        @column += choice.last
+        @dungeon.dungeon[@row][@column].inventory.creatures.push(@player)
       end
     end
 
     def dig(dig_direction)
-      @dig_location = @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last]
+      @dig_location = @dungeon.dungeon[@row + dig_direction.first][@column + dig_direction.last]
       if @dig_location != "#"
         puts "You can't dig there!"
       else
-        @dungeon.dungeon[@row + @directions[dig_direction].first][@column + @directions[dig_direction].last] = "."
+        @dungeon.dungeon[@row + dig_direction.first][@column + dig_direction.last] = Aurangband::Floor.new
       end
-
     end
 
     def welcome
