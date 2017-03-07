@@ -2,7 +2,7 @@ module Aurangband
 
   class Item
 
-    attr_reader :name, :article, :description
+    attr_reader :name, :article, :description, :char
 
     ITEMS = [
       { article: "an",
@@ -32,6 +32,7 @@ module Aurangband
       @name = item[:name]
       @article = item[:article]
       @description = item[:description]
+      @char = "*"
     end
 
     def get_description

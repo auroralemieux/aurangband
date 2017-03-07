@@ -4,22 +4,22 @@ module Aurangband
     attr_reader :char, :message
 
     MONSTERS = [
-      { map_char: "D",
+      { char: "D",
         name: "Ancient Dragon",
         message: "Rawr!"
       },
-      { map_char: "f",
+      { char: "f",
         name: "Feline",
         message: "Purr!"
       },
-      { map_char: "T",
+      { char: "T",
         name: "Forest Troll",
         message: "Grrrlk!"
       }
     ]
     def initialize
       monster = MONSTERS.sample
-      @char = monster[:map_char]
+      @char = monster[:char]
       @message = monster[:message]
       @name = monster[:name]
       @inventory = Inventory.new
@@ -35,7 +35,10 @@ module Aurangband
 
     def drop
       if !inventory_empty?
-        #drop something randomly on the tile it's on
+        item = @inventory.sample
+        @inventory.delete(item)
+        puts "The #{@name} dropped #{@item.article} #{@item.name}."
+        # THE TILE IT'S ON NEEDS TO UPDATE
       end
     end
 

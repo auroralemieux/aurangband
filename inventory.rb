@@ -27,6 +27,7 @@ module Aurangband
       puts "You drop #{@items[number-1].article} #{@items[number-1].name}. It's gone forever!"
       @items.delete_at(number - 1)
     end
+    
 
   end
 end
