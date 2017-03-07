@@ -32,15 +32,12 @@ module Aurangband
     end
 
     def pick_up
-      # can pick up an item from the floor
-      # @inventory << item
-      # puts "You have a(n) #{item}."
+      new_item = Item.new
+      @inventory.add_item(new_item)
     end
 
     def drop
-      # can drop an item from inventory
-      # @inventory.delete(item)
-      # puts "You drop the #{item}."
+      @inventory.drop_item
     end
 
     def dig(dig_direction)
@@ -71,14 +68,9 @@ module Aurangband
     end
 
 
-    def place_initially
-    end
 
     def move(direction)
     end
-
-    # player moves in the dungeon
-    # player is a coordinate on an array of arrays blank
 
   end
 end
