@@ -4,26 +4,28 @@ module Aurangband
 
     def initialize
       @inventory = Inventory.new
+      occupied?
+
       char_display
       # @location
-      @occupied = occupied?
     end
 
     def occupied?
       if @inventory.creatures.empty? && @inventory.items.empty?
-        return false
+        @occupied = false
       else
-        return true
+        @occupied = true
       end
+      return @occupied
     end
 
     def char_display
       if !@occupied && !@inventory.items.empty?
-        @char = @inventory.items.first.char #if items but no creatures
+        @char = @inventory.items[0].char #if items but no creatures
       elsif !@occupied && @inventory.items.empty?
         @char = "." # if no creatures and no items
       else
-        @char = @inventory.creatures.first.char # if no items but a creature
+        @char = @inventory.creatures[0].char # if no items but a creature
       end
     end
 
@@ -45,8 +47,8 @@ module Aurangband
     def arrive(who)
       if !occupied?
         @inventory.creatures.push(who)
-      else
-        puts "A #{@inventory.creatures.first.class} is in that space!"
+      # else
+      #   puts "A #{@inventory.creatures[0].name} is in that space!"
       end
       char_display
     end

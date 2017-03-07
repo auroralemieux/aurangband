@@ -13,7 +13,7 @@ require_relative 'item'
 
 module Aurangband
   class Dungeon
-    attr_accessor :dungeon, :monster
+    attr_accessor :dungeon, :monster, :player
     WALL = Aurangband::Wall.new
     FLOOR = Aurangband::Floor.new
     PLAYER = Aurangband::Player.new
@@ -21,6 +21,7 @@ module Aurangband
     MONSTER = Aurangband::Monster.new
 
     def initialize
+      @player = PLAYER
       @sizes = {
         "small" => [20, 10],
         "medium" => [30, 15],
@@ -46,27 +47,36 @@ module Aurangband
         @dungeon << row
       end
       populate_dungeon_elements_with_items_and_monsters
+      # player_starts_on_floor_space
       return @dungeon
     end
 
     def populate_dungeon_elements_with_items_and_monsters
-      @dungeon.each do |element|
+      @dungeon.flatten.each do |element|
         if element.class == Floor
           num = rand(10)
           if num == 5
-            element.inventory.items << ITEM
+            element.add(ITEM)
           elsif num == 8 || num == 3
-            element.inventory.creatures << MONSTER
+            element.arrive(MONSTER)
           end
+          element.char_display
         end
       end
     end
 
+    def player_starts_on_floor_space
+      @dungeon[0][0] = FLOOR
+      @dungeon[0][0].arrive(@player)
+    end
+
     def display_dungeon
       @dungeon.each do |row|
+        # puts "#{row}"
         row.each do |element|
-          visual = element.char
-          print visual
+          puts "element is #{element}"
+          # visual = element.char
+          # print visual
         end
         puts
 

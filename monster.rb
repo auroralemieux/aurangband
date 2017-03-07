@@ -1,7 +1,7 @@
 module Aurangband
   class Monster
 
-    attr_reader :char, :message
+    attr_reader :char, :message, :name
 
     MONSTERS = [
       { char: "D",
