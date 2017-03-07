@@ -137,7 +137,6 @@ module Aurangband
     def player_move(choice)
       @row = @player.location.first
       @column = @player.location.last
-      # puts "#{@player.name} moves in direction #{choice}."
       @new_location = @dungeon.dungeon[@row + choice.first][@column + choice.last]
       if @new_location.class == Aurangband::Wall
         puts "You can't walk into a wall!"

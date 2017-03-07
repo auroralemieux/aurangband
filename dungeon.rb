@@ -32,8 +32,6 @@ module Aurangband
       @elements = []
       25.times { @elements << WALL }
       25.times { @elements << FLOOR }
-      1.times { @elements << ITEM }
-      3.times { @elements << Aurangband::Monster.new }
       return @elements
     end
 
@@ -47,8 +45,21 @@ module Aurangband
         end
         @dungeon << row
       end
-      # @dungeon[0][0] = PLAYER.char
+      populate_dungeon_elements_with_items_and_monsters
       return @dungeon
+    end
+
+    def populate_dungeon_elements_with_items_and_monsters
+      @dungeon.each do |element|
+        if element.class == Floor
+          num = rand(10)
+          if num == 5
+            element.inventory.items << ITEM
+          elsif num == 8 || num == 3
+            element.inventory.creatures << MONSTER
+          end
+        end
+      end
     end
 
     def display_dungeon
@@ -57,7 +68,7 @@ module Aurangband
           visual = element.char
           print visual
         end
-        puts 
+        puts
 
       end
     end

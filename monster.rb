@@ -22,7 +22,7 @@ module Aurangband
       @char = monster[:char]
       @message = monster[:message]
       @name = monster[:name]
-      # @location 
+      # @location
       @inventory = Inventory.new
     end
 
@@ -45,11 +45,6 @@ module Aurangband
 
     def pick_up
       # add item on floor to the inventory
-    end
-
-    def move
-      # monsters move randomly -- but still follow the rules of floor only
-      # if there are walls blocking them they cannot dig
     end
 
   end

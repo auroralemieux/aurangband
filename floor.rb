@@ -1,39 +1,47 @@
 module Aurangband
   class Floor
-    attr_reader :inventory, :char
+    attr_reader :inventory, :char, :occupied
 
     def initialize
-      @char = "."
+      @char = char_display
       @inventory = Inventory.new
       # @location
       @occupied = occupied?
     end
 
     def occupied?
-      if @inventory.creatures.empty?
+      if @inventory.creatures.empty? && @inventory.items.empty?
         return false
       else
         return true
       end
     end
 
+    def char_display
+      if !@occupied && !@inventory.items.empty?
+        @char = @inventory.items.first.char #if items but no creatures
+      elsif !@occupied && @inventory.items.empty?
+        @char = "." # if no creatures and no items
+      else
+        @char = @inventory.creatures.first.char # if no items but a creature
+      end
+    end
+
     def add(item)
-      @inventory << item
+      @inventory.items << item
     end
 
     def remove(item)
-      @inventory.delete(item)
+      @inventory.items.delete(item)
     end
 
     def leave
       @inventory.creatures.delete_at(0)
-      @char = "."
     end
 
     def arrive(who)
       if !occupied?
         @inventory.creatures.push(who)
-        @char = @inventory.creatures.first.char
       else
         puts "A #{@inventory.creatures.first.class} is in that space!"
       end
