@@ -3,8 +3,8 @@ module Aurangband
     attr_reader :inventory, :char, :occupied
 
     def initialize
-      @char = char_display
       @inventory = Inventory.new
+      char_display
       # @location
       @occupied = occupied?
     end
@@ -29,14 +29,17 @@ module Aurangband
 
     def add(item)
       @inventory.items << item
+      char_display
     end
 
     def remove(item)
       @inventory.items.delete(item)
+      char_display
     end
 
     def leave
       @inventory.creatures.delete_at(0)
+      char_display
     end
 
     def arrive(who)
@@ -45,6 +48,7 @@ module Aurangband
       else
         puts "A #{@inventory.creatures.first.class} is in that space!"
       end
+      char_display
     end
 
   end

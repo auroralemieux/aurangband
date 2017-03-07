@@ -10,17 +10,6 @@ module Aurangband
     def initialize
       # @name is set in get_name
       # location coordinates are row, column
-      @directions = {
-        "u" => [-1, -1],
-        "i" => [-1, 0],
-        "o" => [-1, +1],
-        "j" => [0, -1],
-        "k" => [0, 0],
-        "l" => [0, +1],
-        "m" => [+1, -1],
-        "," => [+1, 0],
-        "." => [+1, +1]
-      }
       @inventory = Inventory.new
       @char = "@"
       @location = [0,0]

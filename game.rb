@@ -135,8 +135,12 @@ module Aurangband
     end
 
     def player_move(choice)
-      @row = @player.location.first
-      @column = @player.location.last
+      @row = @player.location[0]
+      @column = @player.location[1]
+      puts "@row is #{@row}"
+      puts "@column is #{@column}"
+      puts "#{choice.first} choice.first"
+      puts "#{choice.last} choice.last"
       @new_location = @dungeon.dungeon[@row + choice.first][@column + choice.last]
       if @new_location.class == Aurangband::Wall
         puts "You can't walk into a wall!"
@@ -146,15 +150,15 @@ module Aurangband
         @new_location.talk
       else
         @dungeon.dungeon[@row][@column].inventory.creatures.delete(0)
-        @row += choice.first
-        @column += choice.last
+        # puts @player.location.first #+= choice.first
+        # puts @player.location.last #+= choice.last
         @dungeon.dungeon[@row][@column].inventory.creatures.push(@player)
       end
     end
 
     def dig(dig_direction)
       @dig_location = @dungeon.dungeon[@row + dig_direction.first][@column + dig_direction.last]
-      if @dig_location != "#"
+      if @dig_location.class != Aurangband::Wall
         puts "You can't dig there!"
       else
         @dungeon.dungeon[@row + dig_direction.first][@column + dig_direction.last] = Aurangband::Floor.new
