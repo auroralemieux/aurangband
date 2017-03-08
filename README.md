@@ -17,7 +17,7 @@ FLOOR
 WALL
 - belongs to a dungeon
 - is a map element
-- can be turned into a wall by a player digging
+- can be turned into a floor tile by a player digging into it
 
 PLAYER
 - is a player
@@ -38,6 +38,19 @@ INVENTORY
 - can be empty
 - can contain player or monster, or item(s)
 
+CREATURE INVENTORY < INVENTORY
+- inherits from inventory
+- belongs to a floor tile
+- can contain max 1 player or monster
+- can be empty or occupied
+
+ITEM INVENTORY < INVENTORY
+- inherits from inventory
+- belongs to a player, monster, or floor tile
+- can contain unlimited items
+- can be empty or not empty
+- 
+
 ITEM
 - is a thing
 - belongs to an items inventory
@@ -51,4 +64,4 @@ MONSTER
 - can pick up items
 - can drop items
 - can talk to player
-- can talk to other monsters 
+- can talk to other monsters
