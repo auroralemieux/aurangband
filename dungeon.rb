@@ -52,34 +52,45 @@ module Aurangband
     end
 
     def populate_dungeon_elements_with_items_and_monsters
-      @dungeon.flatten.each do |element|
-        if element.class == Floor
-          num = rand(10)
-          if num == 5
-            element.add(ITEM)
-          elsif num == 8 || num == 3
-            element.arrive(MONSTER)
+      @dungeon.each do |row|
+        row.each do |element|
+          if element.class == Floor
+            # puts "class was Floor"
+            num = rand(10)
+            if num == 5
+              element.add(ITEM)
+
+              # puts "added item!"
+            elsif num == 8 # || num == 3
+              element.arrive(MONSTER)
+
+              # puts "added monster!"
+            end
+            element.char_display
           end
-          element.char_display
         end
       end
+      player_starts_on_floor_space
+
     end
 
     def player_starts_on_floor_space
+
       @dungeon[0][0] = FLOOR
+      @dungeon[0][0].leave # in case there are any monsters there
       @dungeon[0][0].arrive(@player)
+      @dungeon[0][0].char_display
+      puts "placed the player"
     end
 
     def display_dungeon
       @dungeon.each do |row|
         # puts "#{row}"
         row.each do |element|
-          puts "element is #{element}"
-          # visual = element.char
-          # print visual
+          puts "element.char is #{element.char}"
+          # print element.char 
         end
         puts
-
       end
     end
 

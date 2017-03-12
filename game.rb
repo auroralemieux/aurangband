@@ -61,7 +61,7 @@ module Aurangband
       else
         puts "I guess you didn't mean to do that."
       end
-      @dungeon.dungeon[0][0] = @player
+      # @dungeon.dungeon[0][0] = @player
       refresh_dungeon
     end
 
